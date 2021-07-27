@@ -26,8 +26,14 @@ module.exports = {
     'import/named': 'error',
     'prettier/prettier': 'error',
     'react/no-typos': 'error',
-    'react/no-unused-state': 'error',
-    'react/jsx-no-bind': 'error',
+    'react/no-unused-state': [0,{
+      "ignoreDOMComponents":  false,
+      "ignoreRefs":  false,
+      "allowArrowFunctions": false,
+      "allowFunctions":  false,
+      "allowBind":  false
+    }],
+    'react/jsx-no-bind': 'warn',
     'react-hooks/rules-of-hooks': 'error', // Checks rules of Hooks
     'react-hooks/exhaustive-deps': 'warn', // Checks effect dependencies
     'react/jsx-uses-react': 'off',

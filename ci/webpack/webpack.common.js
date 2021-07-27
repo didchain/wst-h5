@@ -6,6 +6,7 @@ const tailwindcss = require('tailwindcss')
 const autoprefixer = require('autoprefixer') // help tailwindcss to work
 
 const { R, src, build, pub, favicon } = require('../paths')
+const { custThemeVariables } = require('../themes/index')
 
 module.exports = {
   // Where webpack looks to start building the bundle
@@ -56,7 +57,23 @@ module.exports = {
     rules: [
       // JavaScript: Use Babel to transpile JavaScript files
       { test: /\.(js|jsx)$/, exclude: /node_modules/, use: ['babel-loader'] },
-
+      {
+        test: /antd-mobile.*\.less$/, // integrated antd-mobile
+        use: [
+          'style-loader',
+          'css-loader',
+          {
+            loader: 'less-loader',
+            options: {
+              lessOptions: {
+                javascriptEnabled: true,
+                modifyVars: { ...custThemeVariables }, // custom defined antd-mobile styles
+              },
+            },
+          },
+        ],
+        include: /node_modules/,
+      },
       // Styles: Inject CSS into the head with source maps
       {
         test: /\.(css|scss|sass)$/,

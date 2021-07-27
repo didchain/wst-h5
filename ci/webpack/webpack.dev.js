@@ -7,7 +7,7 @@ process.env.BABEL_ENV = NODE_ENV_VALT
 process.env.NODE_ENV = NODE_ENV_VALT
 
 const commonWebpack = require('./webpack.common')
-const { R, build, configBase } = require('../paths')
+const { join, build, configBase } = require('../paths')
 
 const devSeverOption = {
   historyApiFallback: true,
@@ -16,6 +16,7 @@ const devSeverOption = {
   compress: true,
   hot: true,
   port: 25791,
+  useLocalIp: false,
 }
 
 module.exports = merge(commonWebpack, {
@@ -42,7 +43,7 @@ module.exports = merge(commonWebpack, {
   },
   plugins: [
     new Dotenv({
-      path: R(configBase, '.env.development'),
+      path: join(configBase, '.env.development'),
       safe: true,
       allowEmptyValues: true,
     }),

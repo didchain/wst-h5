@@ -8,10 +8,13 @@
   "license": "MIT",
   "private": false,
   "scripts": {
-    "start": "webpack serve --config ci/webpack/webpack.dev.js --open ",
+    "start": "webpack serve --config ci/webpack/webpack.dev.js --open --host 0.0.0.0",
     "prettier": "prettier \"src/**/*.*(js|jsx)\" --ignore-path=.prettierignore --write"
   },
   "dependencies": {
+    "antd-mobile": "^2.3.4",
+    "dynamsoft-javascript-barcode": "^8.4.0",
+    "html5-qrcode": "^2.0.11",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "tailwindcss": "^2.2.4"
@@ -31,6 +34,7 @@
     "babel-eslint": "^10.1.0",
     "babel-jest": "^26.6.3",
     "babel-loader": "^8.2.2",
+    "babel-plugin-import": "^1.13.3",
     "clean-webpack-plugin": "^4.0.0-alpha.0",
     "copy-webpack-plugin": "^9.0.1",
     "css-loader": "^6.2.0",
@@ -47,6 +51,8 @@
     "html-webpack-plugin": "^5.3.2",
     "husky": "^4.3.8",
     "jest": "^26.6.3",
+    "less": "^4.1.1",
+    "less-loader": "^10.0.1",
     "lint-staged": "^11.1.1",
     "mini-css-extract-plugin": "^2.1.0",
     "node-sass": "^6.0.1",
