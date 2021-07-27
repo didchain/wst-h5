@@ -8,7 +8,7 @@
   "license": "MIT",
   "private": false,
   "scripts": {
-    "start": "webpack serve --config ci/webserver.js --open ",
+    "start": "webpack serve --config ci/webpack/webpack.dev.js --open ",
     "prettier": "prettier \"src/**/*.*(js|jsx)\" --ignore-path=.prettierignore --write"
   },
   "dependencies": {
