@@ -1,0 +1,14 @@
+/**
+ * 21-07-28 00:57 Wednesday
+ * This file used define the module home styles.
+ * This file must be imported into parent scss file, to take it effect.
+ * like : @import './home/top-header.scss';
+ */
+
+/* there can define module variables or function */
+.top-header {
+  &-container {
+    color: #fff;
+  }
+}
+
