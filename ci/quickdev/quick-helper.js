@@ -13,6 +13,8 @@ module.exports = {
   CDM_VIEW_OVERRIDE_KEYS: ['--override', '-o'],
   CDM_VIEW_OUTPUT_KEYS: ['--output', '-o'],
   CDM_VIEW_NOSASS_KEYS: ['--no-sass'],
+  CDM_VIEW_NO_CONTAINER_KEYS: ['--no-container'],
   RESERVED_KEYWORDS_4FILE: ['index'],
   RESERVED_KEYWORDS_4NAME: ['index', 'page'],
+  RESERVED_KEYWORDS_4MODPREFIX: ['comp', 'page', 'container'],
 }

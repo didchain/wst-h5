@@ -9,6 +9,7 @@ const {
   CMD_VIEW_BASE_KEYS,
   RESERVED_KEYWORDS_4FILE,
   RESERVED_KEYWORDS_4NAME,
+  RESERVED_KEYWORDS_4MODPREFIX,
   CDM_VIEW_FORCE_FULLPATH,
 } = require('./quick-helper')
 
@@ -217,28 +218,36 @@ function getCmdBooleanArgv(originalArgvs, longKey, shortKey) {
   return _b
 }
 
-function pickModFilePrefix(modName, modPath) {
-  const _modPathParts = modPath.split(/\\/).filter(Boolean)
-  const _alter =
-    _modPathParts.length >= 2 ? _modPathParts[_modPathParts.length - 2] : ''
-
-  let _nparts = modName
-    .split(/-/)
-    .filter(Boolean)
-    .filter((t) => !RESERVED_KEYWORDS_4NAME.includes(t))
-
-  !_nparts.length &&
-    _alter &&
-    (_nparts = _alter
+/**
+ *
+ * @param {string} oriModName
+ * @param {string} oriModPath
+ * @returns
+ */
+function pickModFilePrefix(oriModName, oriModPath) {
+  if (oriModName) {
+    const _tmpParts = oriModName
       .split(/-/)
-      .filter(Boolean)
-      .filter((t) => !RESERVED_KEYWORDS_4NAME.includes(t)))
+      .filter((t) => !RESERVED_KEYWORDS_4MODPREFIX.includes(t))
 
-  !_nparts.length && (_nparts = modName.split(/-/).filter(Boolean))
+    if (_tmpParts.length) return _tmpParts.join('-')
+  }
 
-  _nparts.length > 2 && (_nparts = _nparts.slice(0, 2))
+  const _last = pickLastPath(oriModPath)
 
-  return _nparts.join('-')
+  let _lastParts = _last
+    .split(/-/)
+    .filter((t) => !RESERVED_KEYWORDS_4MODPREFIX.includes(t))
+
+  if (_lastParts.length > 1) {
+    _lastParts = _lastParts.slice(_lastParts.length - 1)
+  }
+
+  if (_lastParts.length) {
+    return _lastParts.join('-')
+  }
+
+  return _last
 }
 
 function showHelp(originalArgvs, helpDoc) {

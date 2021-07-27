@@ -120,8 +120,8 @@ function checkFileExist(params) {
     throw new Error(msg)
   }
 
-  if (!override && fs.existsSync(modBaseDir, `${funcFileName}.js`)) {
-    msg = `${funcFileName}.js has been exist in ${oriModPath}.`
+  if (!override && fs.existsSync(modBaseDir, `${funcFileName}.jsx`)) {
+    msg = `${funcFileName}.jsx has been exist in ${oriModPath}.`
     throw new Error(msg)
   }
 

@@ -6,6 +6,7 @@
 const chalk = require('chalk')
 const fs = require('fs-extra')
 const dayjs = require('dayjs')
+const { capitalize } = require('lodash')
 
 const {
   ERROR_TEXT_COLORHEX,
@@ -36,6 +37,7 @@ const {
   CMD_MOD_NAME_KEYS,
   CMD_MOD_PATH_KEYS,
   CDM_VIEW_NOSASS_KEYS,
+  CDM_VIEW_NO_CONTAINER_KEYS,
   FILE_OUTPUT_OPTS,
 } = require('./quick-helper')
 
@@ -67,6 +69,342 @@ async function main() {
     : process.argv
 
   showHelp(originalArgvs, comboDoc())
+
+  return new Promise((resolve, reject) => {
+    try {
+      let params = parseParamsFromArgvs(originalArgvs)
+
+      params = checkFileExist(params)
+
+      console.log(params)
+
+      let successMsgs = []
+
+      const indexResp = writeModuleIndex(params)
+      successMsgs.push(indexResp)
+
+      const funcResp = writeReactFile(params)
+      successMsgs.push(funcResp)
+
+      const ctxResp = writeReactContainer(params)
+      successMsgs.push(ctxResp)
+
+      const scssResp = writeSassFile(params)
+      successMsgs.push(scssResp)
+
+      let _msg = 'generate module success.\n'
+      for (let i = 0; i < successMsgs.length; i++) {
+        _msg += `\t${successMsgs[i]}\n`
+      }
+
+      return resolve(chalk.hex(SUCCESS_TEXT_COLORHEX)(_msg))
+    } catch (err) {
+      if (err instanceof Error) return reject(err)
+
+      return reject(new Error(err.toString()))
+    }
+  })
+}
+
+function writeSassFile(params) {
+  const {
+    C_CURR_TS,
+    modBaseDir,
+    oriModPath,
+    sassFileName,
+    noSass,
+    cssPreffix,
+    C_AUTHOR = '',
+  } = params
+
+  if (noSass) {
+    return `Skip generate ${oriModPath}/${sassFileName}.scss`
+  }
+
+  const TPL_COMMENTS =
+    '/**\n' +
+    ` * ${C_CURR_TS}\n` +
+    ` * This file used define the module ${oriModPath} styles.\n` +
+    ` * This file must be imported into parent scss file, to take it effect.\n` +
+    ` * like : @import './${oriModPath}/${sassFileName}.scss';\n` +
+    ` */\n\n`
+
+  let TOL_IMPORT = `/* there can define module variables or function */` + '\n'
+
+  let TPL =
+    `.${cssPreffix} {\n` +
+    `  &-container {\n` +
+    `    color: #fff;\n` +
+    `  }\n` +
+    `}\n` +
+    '\n'
+
+  fs.outputFileSync(
+    R(src, modBaseDir, `${sassFileName}.scss`),
+    TPL_COMMENTS + TOL_IMPORT + TPL,
+    FILE_OUTPUT_OPTS
+  )
+
+  return `${oriModPath}/${sassFileName}.scss`
+}
+
+function writeReactContainer(params) {
+  const {
+    C_CURR_TS,
+    modBaseDir,
+    oriModPath,
+    noContainer,
+    modReactFileName,
+    modContainerFileName,
+    modNamePrefix,
+    C_AUTHOR = '',
+  } = params
+
+  if (noContainer) {
+    return `Skip generate ${oriModPath}/${modNamePrefix}-container.js`
+  }
+  const reactCompName = `${modNamePrefix}Page`
+
+  const TPL_IMPORT =
+    "import { compose } from 'redux'\n" +
+    `import { connect } from 'react-redux'\n` +
+    `import { withRouter } from 'react-router-dom'\n` +
+    '\n' +
+    `import ${reactCompName} from './${modReactFileName}';\n`
+
+  let COMMENTS_TPL = '\n'
+
+  COMMENTS_TPL +=
+    '/**\n' +
+    ' *\n' +
+    ` * @module: ${oriModPath} \n` +
+    ` * @Created: ${C_AUTHOR} ${C_CURR_TS}\n` +
+    ' * make state inject into react dom props\n' +
+    ' *\n' +
+    ' */\n'
+
+  // mapState
+  const TPL_MAP_STATE =
+    'const mapStateToProps = (state) => {\n' +
+    '  // global state contains skinState ... ed.\n' +
+    '  const {\n ' +
+    '   skinState: { header },\n' +
+    '  } = state\n' +
+    '\n' +
+    '  return {\n' +
+    '    header,\n' +
+    '  }\n' +
+    '}\n'
+
+  const TPL_MAP_DISPATCH =
+    '\n' +
+    'const mapDispatchToProps = (dispatch) => {\n' +
+    '  return {\n' +
+    '    // doSomeThing:(arg1,arg2) => (dispatch) => {\n' +
+    '    //   ...\n' +
+    '    //   dispatch(action);\n' +
+    '    // },\n' +
+    '  }\n' +
+    '}\n'
+
+  const EXP_TPL =
+    '\n' +
+    'export default compose(\n' +
+    '  withRouter,\n' +
+    `  connect(mapStateToProps, mapDispatchToProps)\n` +
+    `)(${reactCompName})\n`
+
+  const OUTPUT_TPL =
+    TPL_IMPORT + COMMENTS_TPL + TPL_MAP_STATE + TPL_MAP_DISPATCH + EXP_TPL
+
+  fs.outputFileSync(
+    R(src, modBaseDir, `${modContainerFileName}.js`),
+    OUTPUT_TPL,
+    FILE_OUTPUT_OPTS
+  )
+
+  return `${oriModPath}/${modContainerFileName}.js`
+}
+
+function checkFileExist(params) {
+  const {
+    modBaseDir,
+    indexFileName,
+    oriModPath,
+    modFilePrefix,
+    sassFileName,
+    override,
+    noSass,
+    noContainer,
+  } = params
+
+  const modReactFileName = noContainer
+    ? `${modFilePrefix}-page`
+    : `${modFilePrefix}-comp`
+
+  let _params = {
+    ...params,
+    modReactFileName: modReactFileName,
+  }
+
+  if (!noContainer) {
+    _params.modContainerFileName = `${modFilePrefix}-container`
+  }
+
+  let msg = ''
+  if (!override && fs.existsSync(modBaseDir, `${indexFileName}.js`)) {
+    msg = `${indexFileName}.js has been exist in ${oriModPath}.`
+    throw new Error(msg)
+  }
+
+  if (!override && fs.existsSync(modBaseDir, `${modReactFileName}.jsx`)) {
+    msg = `${modReactFileName}.jsx has been exist in ${oriModPath}.`
+    throw new Error(msg)
+  }
+
+  if (!noSass && !override && fs.existsSync(modBaseDir, `${sassFileName}.js`)) {
+    msg = `${sassFileName}.js has been exist in ${oriModPath}.`
+    throw new Error(msg)
+  }
+
+  if (
+    _params.modContainerFileName &&
+    !override &&
+    fs.existsSync(modBaseDir, `${_params.modContainerFileName}.js`)
+  ) {
+    msg = `${_params.modContainerFileName}.js has been exist in ${oriModPath}.`
+    throw new Error(msg)
+  }
+
+  const rootDir = R(src, modBaseDir)
+  if (!fs.existsSync(rootDir)) {
+    fs.ensureDirSync(rootDir)
+  }
+
+  return _params
+}
+
+function writeReactFile(params) {
+  const {
+    C_CURR_TS,
+    indexFileName,
+    modBaseDir,
+    oriModPath,
+    oriModName,
+    modFilePrefix,
+    sassFileName,
+    override,
+    noSass,
+    cssPreffix,
+    noContainer,
+    modReactFileName,
+    modContainerFileName,
+    modNamePrefix,
+    C_AUTHOR = '',
+  } = params
+
+  const extendClz = noContainer ? 'Component' : 'PureComponent'
+  const reactCompName = `${modNamePrefix}Page`
+
+  const IMP_TPL = `import React, { ${extendClz} } from 'react'\n` + '\n'
+
+  const COMP_TPL_OPEN = `export default class ${reactCompName} extends ${extendClz} {\n`
+  const COMP_TPL_CLOSE = '}\n'
+
+  let COMP_TPL_CONTENT = '  state = {}\n'
+
+  COMP_TPL_CONTENT +=
+    '\n' +
+    '  renderHeader() {\n' +
+    `    return <div className='${cssPreffix}__header'> ${modNamePrefix} Header</div>\n` +
+    '  }\n'
+
+  // content
+  COMP_TPL_CONTENT +=
+    '\n' +
+    '  renderContent() {\n' +
+    `    return <div className='${cssPreffix}__content'>${modNamePrefix} Content</div>\n` +
+    '  }\n'
+
+  //
+  COMP_TPL_CONTENT +=
+    '\n' +
+    '  renderFooter() {\n' +
+    `    return <div className='${cssPreffix}__footer'>${modNamePrefix} Footer</div>\n` +
+    '  }\n'
+
+  // render
+  COMP_TPL_CONTENT +=
+    '\n' +
+    '  render() {\n' +
+    '    // const { xxx } = this.props\n\n' +
+    '    return (\n' +
+    `      <div className='${cssPreffix}'>\n` +
+    `        {this.renderHeader()}\n` +
+    `        {this.renderContent()}\n` +
+    '        {this.renderFooter()}\n' +
+    '      </div>\n' +
+    '    )\n' +
+    '  }\n'
+
+  const OUT_TPL = IMP_TPL + COMP_TPL_OPEN + COMP_TPL_CONTENT + COMP_TPL_CLOSE
+
+  fs.outputFileSync(
+    R(src, modBaseDir, `${modReactFileName}.jsx`),
+    OUT_TPL,
+    FILE_OUTPUT_OPTS
+  )
+
+  return `${oriModPath}/${modReactFileName}.jsx`
+}
+
+function writeModuleIndex(params) {
+  const {
+    C_CURR_TS,
+    indexFileName,
+    modBaseDir,
+    oriModPath,
+    oriModName,
+    modFilePrefix,
+    sassFileName,
+    override,
+    noSass,
+    noContainer,
+    modReactFileName,
+    modContainerFileName,
+    C_AUTHOR = '',
+  } = params
+
+  let COMMENTS_TPL = ''
+
+  let modFiles = [`${modReactFileName}.js`]
+  if (!noContainer && modContainerFileName)
+    modFiles.push(`${modContainerFileName}.js`)
+  if (!noSass) modFiles.push(`${sassFileName}.scss`)
+
+  COMMENTS_TPL +=
+    '/**\n' +
+    ' *\n' +
+    ` * @module: ${oriModPath}\n` +
+    ` *   Main file: index.js\n` +
+    ` *   DOM files: ${modFiles.join(',')}\n` +
+    ` * @Created: ${C_AUTHOR} ${C_CURR_TS}\n` +
+    ` * \n` +
+    ' */\n'
+
+  const relativeFile = noContainer
+    ? `${modReactFileName}.jsx`
+    : `${modContainerFileName}.js`
+
+  const INDEX_TPL = `export { default } from './${relativeFile}';\n`
+
+  fs.outputFileSync(
+    R(src, modBaseDir, `${indexFileName}.js`),
+    COMMENTS_TPL + INDEX_TPL,
+    FILE_OUTPUT_OPTS
+  )
+
+  return `${oriModPath}/${indexFileName}.js`
 }
 
 function parseParamsFromArgvs(originalArgvs) {
@@ -83,6 +421,10 @@ function parseParamsFromArgvs(originalArgvs) {
       originalArgvs,
       CDM_VIEW_FORCE_FULLPATH[0],
       CDM_VIEW_FORCE_FULLPATH[1]
+    ),
+    noContainer: getCmdBooleanArgv(
+      originalArgvs,
+      CDM_VIEW_NO_CONTAINER_KEYS[0]
     ),
     baseView: getViewBasePath(originalArgvs),
   }
@@ -102,11 +444,20 @@ function parseParamsFromArgvs(originalArgvs) {
     _params.oriModPath
   )
 
-  _params.funcName = pickFuncName(_params.oriModName, _params.oriModPath)
+  _params.modNamePrefix = _params.modFilePrefix
+    .split(/-/)
+    .map((t) => capitalize(t))
+    .join('')
 
-  _params.cssPreffix = pickCssPreffixName(_params.oriModName)
+  _params.cssPreffix = pickCssPreffixName(
+    _params.oriModName,
+    _params.oriModPath
+  )
 
-  _params.sassFileName = pickSassFileName(_params.oriModName)
+  _params.sassFileName = pickSassFileName(
+    _params.oriModName,
+    _params.oriModPath
+  )
 
   _params.modBaseDir = join(_params.baseView, _params.oriModPath)
 
