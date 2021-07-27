@@ -7,7 +7,7 @@ import HeaderPage from './header-comp';
 /**
  *
  * @module: home/top-header-page 
- * @Created:  21-07-28 03:08 Wednesday
+ * @Created:  21-07-28 03:24 Wednesday
  * make state inject into react dom props
  *
  */
@@ -19,8 +19,8 @@ const mapStateToProps = (state) => {
 
   return {
     header,
-  };
-};
+  }
+}
 
 const mapDispatchToProps = (dispatch) => {
   return {

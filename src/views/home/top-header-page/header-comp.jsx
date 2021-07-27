@@ -1,6 +1,6 @@
-import React, { PureComponent } from 'react'
+import React, { Component } from 'react'
 
-export default class HeaderPage extends PureComponent {
+export default class HeaderComp extends Component {
   state = {}
 
   renderHeader() {

@@ -303,8 +303,8 @@ function writeReactFile(params) {
     C_AUTHOR = '',
   } = params
 
-  const extendClz = noContainer ? 'Component' : 'PureComponent'
-  const reactCompName = `${modNamePrefix}Page`
+  const extendClz = !noContainer ? 'Component' : 'PureComponent'
+  const reactCompName = `${modNamePrefix}${!noContainer ? 'Comp' : 'Page'}`
 
   const IMP_TPL = `import React, { ${extendClz} } from 'react'\n` + '\n'
 
@@ -364,10 +364,7 @@ function writeModuleIndex(params) {
     indexFileName,
     modBaseDir,
     oriModPath,
-    oriModName,
-    modFilePrefix,
     sassFileName,
-    override,
     noSass,
     noContainer,
     modReactFileName,
@@ -396,7 +393,7 @@ function writeModuleIndex(params) {
     ? `${modReactFileName}.jsx`
     : `${modContainerFileName}.js`
 
-  const INDEX_TPL = `export { default } from './${relativeFile}';\n`
+  const INDEX_TPL = `export { default } from './${relativeFile}'\n`
 
   fs.outputFileSync(
     R(src, modBaseDir, `${indexFileName}.js`),
