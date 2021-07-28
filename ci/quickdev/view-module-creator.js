@@ -398,11 +398,10 @@ function writeModuleIndex(params) {
   COMMENTS_TPL +=
     '/**\n' +
     ' *\n' +
-    ` * @module: ${oriModPath}\n` +
+    ` * @Created : ${C_AUTHOR} ${C_CURR_TS}\n` +
+    ` * @module : ${oriModPath}\n` +
     ` *   Main file: index.js\n` +
     ` *   DOM files: ${modFiles.join(',')}\n` +
-    ` * @Created: ${C_AUTHOR} ${C_CURR_TS}\n` +
-    ` * \n` +
     ' */\n'
 
   const relativeFile = noContainer

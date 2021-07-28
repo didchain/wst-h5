@@ -1,0 +1,22 @@
+/**
+ * 21-07-28 10:24 Wednesday 
+ * This file used define the module layouts/home-layout styles.
+ * This file must be imported into parent scss file, to take it effect.
+ * like : @import './layouts/home-layout/home-layout.scss';
+ */
+
+/* there can define module variables or function */
+.home {
+  &-container {
+    width: 100%;
+    height: 297px;
+    background: linear-gradient(360deg, #fbe695 0%, #f5c95c 75%);
+    background-size: 100% 297px;
+    background-repeat: no-repeat;
+    border-radius: 0px 0px 100px 100px;
+  }
+
+  &-layout {
+    margin: 0 #{$margin-horizontal-space}px;
+  }
+}

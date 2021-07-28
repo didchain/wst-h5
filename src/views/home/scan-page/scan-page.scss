@@ -1,0 +1,14 @@
+/**
+ * 21-07-28 13:53 Wednesday
+ * This file used define the module home/scan-page styles.
+ * This file must be imported into parent scss file, to take it effect.
+ * like : @import './home/scan-page/scan-page.scss';
+ */
+
+/* there can define module variables or function */
+.scan {
+  &-container {
+    color: #fff;
+  }
+}
+

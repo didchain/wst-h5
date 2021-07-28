@@ -1,0 +1,60 @@
+/**
+ * 21-07-28 13:54 Wednesday 
+ * This file used define the module home/user-profile styles.
+ * This file must be imported into parent scss file, to take it effect.
+ * like : @import './home/user-profile/user-profile.scss';
+ */
+
+/* there can define module variables or function */
+.user {
+  &-profile {
+    background: #fff;
+
+    & > div.inner-box {
+      margin: 0 #{$margin-horizontal-space}px;
+    }
+
+    &__header {
+      display: flex;
+      flex-flow: row nowrap;
+
+      justify-content: space-between;
+      align-items: center;
+
+      span.title {
+        line-height: 30px;
+        font-size: 22px;
+        font-weight: 500;
+      }
+
+      & > div.header-img {
+        width: 22px;
+        height: 22px;
+        background: url('~assets/icons/header_icon@2x.png');
+        background-size: cover;
+      }
+    }
+
+    &__info {
+      display: flex;
+      flex-flow: column nowrap;
+
+      & > label.brave-label {
+        color: #b5b6ba;
+        font-size: 12px;
+        padding-bottom: 0.5em;
+      }
+
+      .text-val-show {
+        padding-bottom: 0.5em;
+      }
+    }
+
+    &__header {
+      padding: 0.5em 0;
+    }
+  }
+  &-container {
+    color: #fff;
+  }
+}

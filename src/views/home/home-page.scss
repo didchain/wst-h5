@@ -1,0 +1,190 @@
+/**
+ * 21-07-28 13:45 Wednesday 
+ * This file used define the module home styles.
+ * This file must be imported into parent scss file, to take it effect.
+ * like : @import './home/index-page.scss';
+ */
+
+/* there can define module variables or function */
+.home {
+  &-page {
+    &__header {
+      width: 100%;
+      display: flex;
+      flex-flow: row nowrap;
+      justify-content: space-between;
+      padding: 0.5em 0;
+
+      .app-header {
+        &-title {
+          font-family: PingFangSC-Medium, PingFang SC;
+          line-height: 33px;
+          font-size: 24px;
+          font-weight: 500;
+        }
+
+        &-location {
+          padding: 6px 0px 6px 12px;
+          // border: 1px solid red;
+          display: flex;
+          flex-flow: row nowrap;
+          align-items: center;
+
+          > img {
+            width: 22px;
+            height: 22px;
+          }
+        }
+      }
+    }
+
+    &__address {
+      display: flex;
+      flex-flow: column nowrap;
+      padding-bottom: 1em;
+
+      span {
+        line-height: 18px;
+      }
+
+      span.id-address {
+        word-break: break-all;
+      }
+    }
+
+    &__footer {
+      background: #fff;
+      padding: 6px 0;
+
+      > div.card-title {
+        padding: 0 1em;
+        font-weight: 500;
+        text-shadow: 0px 2px 6px rgba(12, 18, 61, 0.06);
+        line-height: 20px;
+      }
+
+      > div.card-split {
+        margin: 6px 1em;
+        background: #f0f1f3;
+        height: 1px;
+        box-shadow: 0px 1px -2px 1px rgba(12, 18, 61, 0.06);
+      }
+    }
+  }
+
+  &-card-body {
+    display: flex;
+    flex-flow: row nowrap;
+
+    > div {
+      flex: 1 1 33.333333%;
+      display: flex;
+      flex-flow: column nowrap;
+      justify-content: center;
+      align-items: center;
+      padding: 0.5em 0;
+    }
+
+    div.serv-icon {
+      width: 42px;
+      height: 42px;
+
+      &.serv-icon-notice {
+        background: url('~assets/icons/notice_icon@3x.png');
+        background-size: cover;
+      }
+
+      &.serv-icon-hospital {
+        background: url('~assets/icons/hospital_icon@3x.png');
+        background-size: cover;
+      }
+
+      &.serv-icon-hotel {
+        background: url('~assets/icons/hotel_icon@3x.png');
+        background-size: cover;
+      }
+    }
+
+    span.serv-item-title {
+      padding-top: 0.5em;
+      line-height: 20px;
+    }
+  }
+
+  &-qrcode {
+    &__container {
+      width: 100%;
+      height: 371px;
+      background-image: url('~assets/images/qrbg@3x.png');
+      background-size: cover;
+
+      display: flex;
+      flex-flow: column nowrap;
+      align-items: center;
+      justify-content: center;
+
+      & > .inner-box {
+        border: 3px solid rgba($color: #fff, $alpha: 0.75);
+      }
+
+      .qrcode-box {
+        width: 100%;
+        flex: 1 1 auto;
+
+        display: flex;
+        flex-flow: column nowrap;
+        justify-content: center;
+        align-items: center;
+
+        img.qrcode-img {
+          width: 245px;
+          height: 245px;
+        }
+      }
+
+      .qrcode-tips {
+        padding: 0.75em 10px;
+        color: #9b9c9f;
+        span {
+          line-height: 26px;
+        }
+      }
+    }
+  }
+}
+
+@media only screen and (max-width: 360px) {
+  .home {
+    &-qrcode {
+      &__container {
+        height: 280px;
+
+        .qrcode-box {
+          img.qrcode-img {
+            width: 215px;
+            height: 215px;
+          }
+        }
+
+        .qrcode-tips {
+          padding: 0.25em 10px;
+          span {
+            line-height: 26px;
+          }
+        }
+      }
+    }
+
+    &-card-body {
+      div.serv-icon {
+        width: 32px;
+        height: 32px;
+      }
+
+      span.serv-item-title {
+        padding-top: 0.25em;
+        line-height: 20px;
+      }
+    }
+  }
+}

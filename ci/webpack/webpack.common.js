@@ -7,6 +7,9 @@ const autoprefixer = require('autoprefixer') // help tailwindcss to work
 
 const { R, src, build, pub, favicon } = require('../paths')
 const { custThemeVariables } = require('../themes/index')
+const { BaseResolve, imgExtensions } = require('./resolve-helper')
+
+const devMode = process.env.NODE_ENV === 'development'
 
 module.exports = {
   // Where webpack looks to start building the bundle
@@ -17,6 +20,10 @@ module.exports = {
     path: build,
     filename: '[name].bundle.js',
     publicPath: '/',
+  },
+
+  resolve: {
+    ...BaseResolve,
   },
 
   // Customize the webpack build process
@@ -78,9 +85,33 @@ module.exports = {
       {
         test: /\.(css|scss|sass)$/,
         use: [
-          MiniCssExtractPlugin.loader,
-          'css-loader',
-          'sass-loader',
+          devMode
+            ? {
+                loader: 'style-loader',
+              }
+            : {
+                loader: MiniCssExtractPlugin.loader,
+              },
+
+          // MiniCssExtractPlugin.loader,
+          {
+            loader: 'css-loader',
+            options: { sourceMap: true },
+          },
+          {
+            loader: 'resolve-url-loader',
+            options: { sourceMap: true, debug: true },
+          },
+          {
+            loader: 'sass-loader',
+            options: {
+              sourceMap: true,
+              implementation: require('sass'),
+              sassOptions: {
+                fiber: require('fibers'),
+              },
+            },
+          },
           {
             loader: 'postcss-loader', // postcss loader needed for tailwindcss
             options: {
@@ -92,7 +123,19 @@ module.exports = {
           },
         ],
       },
-
+      // {
+      //   test: new RegExp('.(' + imgExtensions.join('|') + ')$'),
+      //   use: [
+      //     {
+      //       loader: 'url-loader',
+      //       options: {
+      //         name: '[name].[ext]',
+      //         limit: 8192,
+      //       },
+      //     },
+      //   ],
+      //   exclude: /node_modules/,
+      // },
       {
         test: /\.svg$/,
         use: ['@svgr/webpack'],
