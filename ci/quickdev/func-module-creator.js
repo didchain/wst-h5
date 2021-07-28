@@ -100,7 +100,7 @@ async function main() {
 
       return resolve(chalk.hex(SUCCESS_TEXT_COLORHEX)(_msg))
     } catch (err) {
-      if (err instanceof Error) throw err
+      if (err instanceof Error) reject(err)
 
       throw new Error(err.toString())
     }

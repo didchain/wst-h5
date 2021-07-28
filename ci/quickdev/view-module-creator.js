@@ -21,8 +21,6 @@ const {
   getModNameVal,
   showHelp,
   validModPath,
-  pickFileName,
-  pickFuncName,
   pickCssPreffixName,
   getCmdBooleanArgv,
   pickSassFileName,
@@ -130,7 +128,7 @@ function writeSassFile(params) {
 
   const TPL_COMMENTS =
     '/**\n' +
-    ` * ${C_CURR_TS}\n` +
+    ` * ${C_CURR_TS} ${C_AUTHOR}\n` +
     ` * This file used define the module ${oriModPath} styles.\n` +
     ` * This file must be imported into parent scss file, to take it effect.\n` +
     ` * like : @import './${oriModPath}/${sassFileName}.scss';\n` +
@@ -313,21 +311,12 @@ function checkFileExist(params) {
 
 function writeReactFile(params) {
   const {
-    C_CURR_TS,
-    indexFileName,
     modBaseDir,
     oriModPath,
-    oriModName,
-    modFilePrefix,
-    sassFileName,
-    override,
-    noSass,
     cssPreffix,
     noContainer,
     modReactFileName,
-    modContainerFileName,
     modNamePrefix,
-    C_AUTHOR = '',
   } = params
 
   const extendClz = !noContainer ? 'Component' : 'PureComponent'
