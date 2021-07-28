@@ -17,4 +17,9 @@ module.exports = {
   RESERVED_KEYWORDS_4FILE: ['index'],
   RESERVED_KEYWORDS_4NAME: ['index', 'page'],
   RESERVED_KEYWORDS_4MODPREFIX: ['comp', 'page', 'container'],
+  RESET_COLOR_SIGN: '\x1B[0m',
+  ERROR_TEXT_SIGN: '\x1B[31m',
+  BRIGHT_TEXT_SIGN: '\x1B[1m',
+  SUCCESS_TEXT_SIGN: '\x1B[32m',
+  MAGENTA_TEXT_SIGN: '\x1B[35m',
 }

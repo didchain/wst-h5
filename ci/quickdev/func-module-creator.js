@@ -43,18 +43,23 @@ const { R, join, src } = require('../paths')
 main()
   .then((resp) => {
     console.log(
-      chalk.hex(SUCCESS_TEXT_COLORHEX)('✨✨✨ congratulate! ✨✨✨\n') + resp
+      '\x1B[32m%s\x1B[0m',
+      chalk.hex(SUCCESS_TEXT_COLORHEX)('✨✨✨ congratulate! ✨✨✨\n') +
+        resp +
+        '\n🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉\n'
     )
   })
   .catch((err) => {
     console.log(err)
     if (typeof err === 'object' && err instanceof Error) {
       console.log(
+        '\x1B[31m%s\x1B[0m',
         chalk.hex(ERROR_TEXT_COLORHEX).bold('❌ Error: \n') +
           chalk.hex(ERROR_TEXT_COLORHEX)(err.message)
       )
     } else {
       console.log(
+        '\x1B[31m%s\x1B[0m',
         'Error: ' + err ? err.toString() : 'generate function module fail.'
       )
     }
@@ -86,7 +91,7 @@ async function main() {
 
       successMsgs = successMsgs.filter(Boolean)
 
-      console.log(params)
+      console.log('\x1B[35m%s\x1B[0m', params)
 
       let _msg = 'generate module success.\n'
       for (let i = 0; i < successMsgs.length; i++) {

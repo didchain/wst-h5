@@ -46,18 +46,25 @@ const { R, join, src } = require('../paths')
 main()
   .then((resp) => {
     console.log(
-      chalk.hex(SUCCESS_TEXT_COLORHEX)('✨✨✨ congratulate! ✨✨✨\n') + resp
+      '\x1B[32m%s\x1B[0m',
+      chalk.hex(SUCCESS_TEXT_COLORHEX)(
+        '\x1B[33m✨✨✨ congratulate! ✨✨✨\x1B[0m\n'
+      ) +
+        resp +
+        '\n🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉\n'
     )
   })
   .catch((err) => {
-    console.log(err)
+    // console.log(err)
     if (typeof err === 'object' && err instanceof Error) {
       console.log(
+        '\x1B[31m%s\x1B[0m',
         chalk.hex(ERROR_TEXT_COLORHEX).bold('❌ Error: \n') +
           chalk.hex(ERROR_TEXT_COLORHEX)(err.message)
       )
     } else {
       console.log(
+        '\x1B[31m%s\x1B[0m',
         'Error: ' + err ? err.toString() : 'generate function module fail.'
       )
     }
@@ -76,7 +83,7 @@ async function main() {
 
       params = checkFileExist(params)
 
-      console.log(params)
+      console.log('\x1B[35m%s\x1B[0m', params)
 
       let successMsgs = []
 
@@ -252,27 +259,47 @@ function checkFileExist(params) {
   }
 
   let msg = ''
-  if (!override && fs.existsSync(modBaseDir, `${indexFileName}.js`)) {
-    msg = `${indexFileName}.js has been exist in ${oriModPath}.`
+
+  if (!override && fs.existsSync(R(src, modBaseDir, `${indexFileName}.js`))) {
+    msg = `\t${indexFileName}.js has been exist in ${oriModPath}.`
+    msg += `\n\tyour used ${CDM_VIEW_OVERRIDE_KEYS.join(
+      ' or '
+    )} force override.`
     throw new Error(msg)
   }
 
-  if (!override && fs.existsSync(modBaseDir, `${modReactFileName}.jsx`)) {
-    msg = `${modReactFileName}.jsx has been exist in ${oriModPath}.`
+  if (
+    !override &&
+    fs.existsSync(R(src, modBaseDir, `${modReactFileName}.jsx`))
+  ) {
+    msg = `\t${modReactFileName}.jsx has been exist in ${oriModPath}.`
+    msg += `\n\tyour used ${CDM_VIEW_OVERRIDE_KEYS.join(
+      ' or '
+    )} force override.`
     throw new Error(msg)
   }
 
-  if (!noSass && !override && fs.existsSync(modBaseDir, `${sassFileName}.js`)) {
-    msg = `${sassFileName}.js has been exist in ${oriModPath}.`
+  if (
+    !noSass &&
+    !override &&
+    fs.existsSync(R(src, modBaseDir, `${sassFileName}.js`))
+  ) {
+    msg = `\t${sassFileName}.js has been exist in ${oriModPath}.`
+    msg += `\n\tyour used ${CDM_VIEW_OVERRIDE_KEYS.join(
+      ' or '
+    )} force override.`
     throw new Error(msg)
   }
 
   if (
     _params.modContainerFileName &&
     !override &&
-    fs.existsSync(modBaseDir, `${_params.modContainerFileName}.js`)
+    fs.existsSync(R(src, modBaseDir, `${_params.modContainerFileName}.js`))
   ) {
-    msg = `${_params.modContainerFileName}.js has been exist in ${oriModPath}.`
+    msg = `\t${_params.modContainerFileName}.js has been exist in ${oriModPath}.`
+    msg += `\n\tyour used ${CDM_VIEW_OVERRIDE_KEYS.join(
+      ' or '
+    )} force override.`
     throw new Error(msg)
   }
 

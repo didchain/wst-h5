@@ -45,7 +45,7 @@ function getModPathVal(originalArgvs) {
 
   if (!validModPath(_argv)) {
     let msg =
-      'module path required.\n' +
+      'module path required. modPath ${_argv} illegal.\n' +
       `Please used command ${CMD_MOD_PATH_KEYS[0]} <module path> or ${CMD_MOD_PATH_KEYS[1]} <module path>.\n`
     throw Error(msg)
   }
@@ -254,7 +254,7 @@ function showHelp(originalArgvs, helpDoc) {
   let idx = originalArgvs.findIndex((argv) => argv === CMD_HELP_KEYS[0])
   let cidx = originalArgvs.findIndex((argv) => argv === CMD_HELP_KEYS[1])
   if (idx > 0 || cidx > 0) {
-    console.log(helpDoc)
+    console.log('\x1B[36m%s\x1B[0m', helpDoc)
     process.exit(0)
   }
 }
