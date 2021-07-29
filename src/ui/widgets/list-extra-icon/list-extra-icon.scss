@@ -1,0 +1,21 @@
+/**
+ * 21-07-29 16:38 Thursday
+ * This file used define the module ui/widgets/list-extra-icon styles.
+ * This file must be imported into parent scss file, to take it effect.
+ * like : @import './ui/widgets/list-extra-icon/list-extra-icon.scss';
+ */
+
+/* there can define module variables or function */
+/* extend antd-mobile */
+.am-list-item .am-list-line .am-list-extra {
+  div.am-list-extra-box {
+    width: 100%;
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+
+    > .list-extra-space {
+      flex: 1 1 auto;
+    }
+  }
+}

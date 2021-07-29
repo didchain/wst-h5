@@ -1,6 +1,8 @@
 @import './global/variables';
 @import './global/reset';
 
+@import './cust-extend-antd.scss';
+
 /* common */
 .address-break-all {
   word-break: break-all;

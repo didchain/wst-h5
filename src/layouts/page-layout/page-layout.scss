@@ -7,8 +7,12 @@
 
 /* there can define module variables or function */
 .page-layout {
-  &-container {
-    color: #fff;
+  min-height: 100vh;
+  background: #fff;
+  display: flex;
+  flex-flow: column nowrap;
+
+  .page-navbar {
+    border-bottom: 1px solid #f3f4f7;
   }
 }
-

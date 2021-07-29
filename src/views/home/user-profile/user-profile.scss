@@ -20,6 +20,7 @@
 
       justify-content: space-between;
       align-items: center;
+      padding: 1em 0 0.25em 0;
 
       span.title {
         line-height: 30px;
@@ -32,12 +33,21 @@
         height: 22px;
         background: url('~assets/icons/header_icon@2x.png');
         background-size: cover;
+        cursor: pointer;
+        opacity: 0.8;
+        transition: 0.3s ease-in-out;
+
+        &:focus,
+        &:hover {
+          opacity: 1;
+        }
       }
     }
 
     &__info {
       display: flex;
       flex-flow: column nowrap;
+      padding: 1em 0;
 
       & > label.brave-label {
         color: #b5b6ba;
@@ -50,10 +60,98 @@
       }
     }
 
-    &__header {
-      padding: 0.5em 0;
+    &__author {
+      display: flex;
+      padding: 0.75em 0.5em;
+      flex-flow: row nowrap;
+      justify-content: space-between;
+      align-items: center;
+      background: linear-gradient(90deg, #f5c95c 0%, #fad884 100%);
+      border-radius: 8px;
+
+      & > div.cust-icon.cn-next-circle {
+        width: 22px;
+        height: 22px;
+      }
+    }
+
+    &-list {
+      &__container {
+        background: #fff;
+        box-shadow: 0px 2px 6px 2px rgba(12, 18, 61, 0.06);
+        border-radius: 8px;
+        margin: 0 #{$margin-horizontal-space}px;
+      }
+
+      &__header {
+        display: flex;
+        flex-flow: row nowrap;
+        justify-content: space-between;
+        align-items: center;
+        color: #0c123d;
+
+        > span {
+          line-height: 26px;
+        }
+
+        > span.state-label {
+          line-height: 21px;
+          font-size: 15px;
+        }
+
+        > span.state-text {
+          background: rgba(242, 77, 74, 0.1);
+          color: rgba(242, 77, 74, 1);
+          border-radius: 8px;
+          padding: 0 0.75em;
+        }
+      }
+
+      .am-list-item .am-list-line .am-list-content {
+        font-size: 15px;
+        font-weight: 400;
+      }
+
+      & div.am-list-extra {
+        display: flex;
+        flex-flow: row nowrap;
+
+        .list-extra-space {
+          flex: 1 1 auto;
+        }
+      }
+
+      & div.cust-icon.cn-next-seqare {
+        align-self: flex-end;
+        width: 24px;
+        height: 24px;
+      }
+    }
+
+    /*switch*/
+    &-switch {
+      &.am-switch {
+        .checkbox {
+          background: rgba(#888, 0.25);
+
+          &:before {
+            background: url('~assets/icons/switch_off@3x.png');
+            background-size: cover;
+          }
+        }
+
+        & > input[type='checkbox'] {
+          &:checked {
+            & + .checkbox {
+              background: url('~assets/icons/switch_on@3x.png');
+              background-size: cover;
+            }
+          }
+        }
+      }
     }
   }
+
   &-container {
     color: #fff;
   }

@@ -1,0 +1,53 @@
+/**
+ * 21-07-29 18:24 Thursday 
+ * This file used define the module about styles.
+ * This file must be imported into parent scss file, to take it effect.
+ * like : @import './about/template.scss';
+ */
+
+/* there can define module variables or function */
+.about {
+  &-template {
+    // position: fixed;
+    min-height: 100vh;
+    width: 100%;
+    background: url('~assets/images/bg@3x.png');
+    background-size: cover;
+    display: flex;
+    flex-flow: row nowrap;
+
+    & > .inner-container {
+      width: 100%;
+      flex: 1 1 100%;
+      background: rgba(#fff, 0.75);
+    }
+
+    &__header {
+      text-align: center;
+      display: flex;
+      flex-flow: column nowrap;
+      align-items: center;
+    }
+  }
+
+  &-info,
+  &-custom-service,
+  &-issue {
+    > h3 {
+      text-align: center;
+    }
+
+    p {
+      text-indent: 1.2em;
+    }
+  }
+
+  &-header {
+    &-logo {
+      width: 100px;
+      height: 100px;
+      background: url('~assets/icons/user_tab_on@3x.png');
+      background-size: cover;
+    }
+  }
+}

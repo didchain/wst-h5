@@ -1,0 +1,21 @@
+div.cust {
+  &-icon {
+    width: 1em;
+    height: 1em;
+
+    &.cn-next-circle {
+      background: url('~assets/icons/icon_next_circle@2x.png');
+      background-size: cover;
+    }
+
+    &.cn-next-seqare {
+      background: url('~assets/icons/next_seqare@3x.png');
+      background-size: cover;
+    }
+  }
+}
+
+/* extend antd-mobile */
+.am-list-item .am-list-line div.am-list-content {
+  font-size: 15px;
+}

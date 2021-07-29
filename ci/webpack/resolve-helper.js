@@ -9,6 +9,7 @@ const BaseResolve = {
     '~Assets': R(src, 'assets'),
     '~Lib': R(src, 'lib'),
     '~Layouts': R(src, 'layouts'),
+    '~Router': R(src, 'router'),
     '~Store': R(src, 'store'),
     '~UI': R(src, 'ui'),
     '~Views': R(src, 'views'),

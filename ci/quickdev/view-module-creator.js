@@ -8,6 +8,8 @@ const fs = require('fs-extra')
 const dayjs = require('dayjs')
 const { capitalize } = require('lodash')
 
+const openTrace = false
+
 const {
   ERROR_TEXT_COLORHEX,
   SUCCESS_TEXT_COLORHEX,
@@ -66,6 +68,7 @@ main()
         'Error: ' + err ? err.toString() : 'generate function module fail.'
       )
     }
+    openTrace && console.log(err)
   })
 
 async function main() {

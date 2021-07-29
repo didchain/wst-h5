@@ -1,0 +1,43 @@
+/**
+ * 21-07-29 14:53 Thursday 
+ * This file used define the module sett styles.
+ * This file must be imported into parent scss file, to take it effect.
+ * like : @import './sett/index-page.scss';
+ */
+
+/* there can define module variables or function */
+.sett-page {
+  // margin: 1em #{$margin-horizontal-space}px;
+  height: 100%;
+  flex: 1 1 100%;
+  display: flex;
+  flex-flow: column nowrap;
+
+  margin: 0 0;
+
+  &__content {
+    flex: 1 1 auto;
+  }
+
+  &__list {
+    .am-list-item .am-list-line .am-list-extra {
+      display: flex;
+      flex-flow: row nowrap;
+      justify-content: right;
+    }
+  }
+
+  &__footer {
+    text-align: center;
+    padding: 1em 0;
+  }
+}
+
+.privacy-policy {
+  cursor: pointer;
+
+  &:focus,
+  &:hover {
+    color: blue;
+  }
+}

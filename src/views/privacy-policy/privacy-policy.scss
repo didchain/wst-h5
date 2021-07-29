@@ -1,0 +1,35 @@
+/**
+ * 21-07-29 17:36 Thursday
+ * This file used define the module sett/privacy-policy styles.
+ * This file must be imported into parent scss file, to take it effect.
+ * like : @import './sett/privacy-policy/privacy-policy.scss';
+ */
+
+/* there can define module variables or function */
+.bpp {
+  &-container {
+    h3 {
+      text-align: center;
+    }
+
+    .title-outline {
+      font-family: PingFangSC-Regular, PingFang SC;
+    }
+
+    > section {
+      ul {
+        margin-block-start: 0.25em;
+        margin-inline-start: 0.25em;
+        padding-inline-start: 1.75em;
+        li {
+          list-style-type: lower-latin;
+          line-height: 20px;
+        }
+      }
+
+      p {
+        text-indent: 1.2em;
+      }
+    }
+  }
+}

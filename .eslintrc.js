@@ -33,7 +33,12 @@ module.exports = {
       "allowFunctions":  false,
       "allowBind":  false
     }],
-    'react/jsx-no-bind': 'warn',
+    'react/prop-types':[0,{
+      ignore:false,
+      skipUndeclared:false,
+      customValidators:false,
+    }]
+    'react/jsx-no-bind': 'off',
     'react-hooks/rules-of-hooks': 'error', // Checks rules of Hooks
     'react-hooks/exhaustive-deps': 'warn', // Checks effect dependencies
     'react/jsx-uses-react': 'off',

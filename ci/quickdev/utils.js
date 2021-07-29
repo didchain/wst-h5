@@ -159,8 +159,27 @@ function pickFuncName(oriModName, oriModPath) {
   return _parts.map((t) => capitalize(t)).join('')
 }
 
+/**
+ *
+ * @param {string} oriModName
+ * @param {string} oriModPath
+ * @returns
+ */
 function pickCssPreffixName(oriModName, oriModPath) {
-  if (oriModName) return oriModName
+  if (oriModName) {
+    let orinParts = oriModName
+      .split(/-/)
+      .filter(Boolean)
+      .filter((t) => !RESERVED_KEYWORDS_4NAME.includes(t.toString()))
+
+    if (orinParts.length) {
+      return orinParts.join('-')
+    } else {
+      const _rootNameParts = pickRootCssNamesFromModPath(oriModPath)
+
+      return _rootNameParts.length ? _rootNameParts.join('-') : oriModName
+    }
+  }
 
   const lastModPath = pickLastPath(oriModPath)
 
@@ -256,6 +275,37 @@ function showHelp(originalArgvs, helpDoc) {
   if (idx > 0 || cidx > 0) {
     console.log('\x1B[36m%s\x1B[0m', helpDoc)
     process.exit(0)
+  }
+}
+
+function splitModPath(modPath) {
+  if (!modPath) return []
+  return modPath.split(/\/|\\/).filter(Boolean)
+}
+/**
+ *
+ * @param {string} oriModPath
+ * @returns []
+ */
+function pickRootCssNamesFromModPath(oriModPath) {
+  const _modPathParts = splitModPath(oriModPath)
+
+  if (!_modPathParts.length) return []
+  const _rootDir = _modPathParts[0]
+  let _rootParts = _rootDir.split(/-/).filter(Boolean)
+
+  const _rootPartsFilter = _rootParts.filter(
+    (t) => !RESERVED_KEYWORDS_4NAME.includes(t.toString())
+  )
+
+  let result = []
+  if (_rootPartsFilter.length === 0) {
+    return _rootParts.slice(0, 1)
+  } else if (_rootPartsFilter.length === 1) {
+    _rootPartsFilter.push('page')
+    return _rootPartsFilter
+  } else {
+    return _rootPartsFilter.slice(0, 2)
   }
 }
 

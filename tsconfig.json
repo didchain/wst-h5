@@ -17,14 +17,15 @@
     "baseUrl": "./",
     "outDir": "/dist",
     "paths": {
-      "~/*": ["src/*/**"],
-      "~Assets/*": ["src/assets/**"],
-      "~Lib/*": ["src/lib/**"],
-      "~Layouts/*": ["src/layouts/**"],
-      "~Store/*": ["src/store/**"],
-      "~UI/*": ["src/ui/**"],
-      "~Views/*": ["src/views/**"],
-      "~Widgets/*": ["src/ui/widgets/**"]
+      "~/*": ["src/*"],
+      "~Assets/*": ["src/assets/*"],
+      "~Lib/*": ["src/lib/*"],
+      "~Layouts/*": ["src/layouts/*"],
+      "~Router/*": ["src/router/*"],
+      "~Store/*": ["src/store/*"],
+      "~UI/*": ["src/ui/*"],
+      "~Views/*": ["src/views/*"],
+      "~Widgets/*": ["src/ui/widgets/*"]
     }
   },
   "include": ["./src"],
